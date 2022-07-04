@@ -8,22 +8,28 @@
           Light up your party with kwadrop! Let everyone decide what will play today!
         </p>
       </div>
-      <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!</span>
-      <v-btn class="button-primary mt-5 mb-5" depressed rounded block="true" to="create">Create room
+      <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!
+        <font-awesome-icon icon="fa-solid fa-balloons"/>
+      </span>
+      <v-btn class="button-primary mt-5 mb-5" depressed rounded block="true" to="create">
+        Create room
       </v-btn>
       <span id="spacer-text" class="align-self-center">OR</span>
-      <v-btn class="button-secondary mt-5" depressed rounded block="true" to="connect">Connect to
-        existing
-        room
-      </v-btn> <!--TODO: что делают кнопки connect и create-->
+      <v-btn class="button-secondary mt-5" depressed rounded block="true" to="connect">
+        Connect to existing room
+      </v-btn>
+      <!--TODO: что делают кнопки connect и create-->
     </div>
   </div>
+  <footer-view></footer-view>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
 
 import HeaderView from '@/components/header.vue';
+import FooterView from '@/components/footer.vue';
+
 import svgLogo from '@/assets/logo.svg';
 
 export default defineComponent({
@@ -35,6 +41,7 @@ export default defineComponent({
   },
 
   components: {
+    FooterView,
     HeaderView,
   },
 });

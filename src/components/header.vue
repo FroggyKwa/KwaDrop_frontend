@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar id="bar" elevation="0">
+  <v-app-bar shrink-on-scroll id="bar" elevation="0">
     <v-btn v-ripple="false" @click="drawer = !drawer"
            class="d-flex d-sm-none">
       <font-awesome-icon id="dropdown-caret-icon" size="2x" icon="fa-solid fa-caret-down"/>

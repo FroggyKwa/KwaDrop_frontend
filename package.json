@@ -59,7 +59,8 @@
     },
     "rules": {
       "camelcase": "off",
-      "@typescript-eslint/camelcase": "off"
+      "@typescript-eslint/camelcase": "off",
+      "max-len": 0
     }
   },
   "browserslist": [

@@ -11,13 +11,9 @@
       <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!
         <font-awesome-icon icon="fa-solid fa-balloons"/>
       </span>
-      <v-btn class="button-primary mt-5 mb-5" depressed rounded block="true" to="create">
-        Create room
-      </v-btn>
+      <dialog-button button-style='button-primary'>Create room</dialog-button>
       <span id="spacer-text" class="align-self-center">OR</span>
-      <v-btn class="button-secondary mt-5" depressed rounded block="true" to="connect">
-        Connect to existing room
-      </v-btn>
+      <dialog-button button-style="button-secondary">Connect to existing room</dialog-button>
       <!--TODO: что делают кнопки connect и create-->
     </div>
   </div>
@@ -27,6 +23,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
+import DialogButton from '@/components/DialogButton.vue';
 import HeaderView from '@/components/header.vue';
 import FooterView from '@/components/footer.vue';
 
@@ -43,6 +40,7 @@ export default defineComponent({
   components: {
     FooterView,
     HeaderView,
+    DialogButton,
   },
 });
 </script>
@@ -51,21 +49,6 @@ export default defineComponent({
 @import "@/assets/css/variables"
 #logo-img-wrapper
   padding: 100px 100px 0 0
-
-.button
-  font:
-    size: 2em
-  padding: 1em 1em 1em 1em
-
-.button-primary
-  @extend .button
-  color: $not-white !important
-  background-color: $light-green
-
-.button-secondary
-  @extend .button
-  color: $semi-gray !important
-  background-color: $not-white
 
 #spacer-text
   font:

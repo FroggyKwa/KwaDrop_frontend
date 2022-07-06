@@ -12,6 +12,7 @@
     "@fortawesome/free-regular-svg-icons": "^6.1.1",
     "@fortawesome/free-solid-svg-icons": "^6.1.1",
     "@fortawesome/vue-fontawesome": "^3.0.1",
+    "@kouts/vue-modal": "^3.0.4",
     "@mdi/font": "5.9.55",
     "core-js": "^3.8.3",
     "roboto-fontface": "*",
@@ -34,6 +35,7 @@
     "@vue/cli-service": "~5.0.0",
     "@vue/eslint-config-airbnb": "^6.0.0",
     "@vue/eslint-config-typescript": "^9.1.0",
+    "body-scroll-freezer": "^1.0.5",
     "eslint": "^7.32.0",
     "eslint-plugin-import": "^2.25.3",
     "eslint-plugin-vue": "^8.0.3",
@@ -61,7 +63,8 @@
     "rules": {
       "camelcase": "off",
       "@typescript-eslint/camelcase": "off",
-      "max-len": 0
+      "max-len": 0,
+      "import/no-extraneous-dependencies": ["error", {"devDependencies": true}]
     }
   },
   "browserslist": [

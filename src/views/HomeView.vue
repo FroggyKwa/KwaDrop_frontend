@@ -11,9 +11,9 @@
       <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!
         <font-awesome-icon icon="fa-solid fa-balloons"/>
       </span>
-      <dialog-button button-style='button-primary'>Create room</dialog-button>
+      <create-room-dialog-button button-style='big-button-primary' text="Create room"></create-room-dialog-button>
       <span id="spacer-text" class="align-self-center">OR</span>
-      <dialog-button button-style="button-secondary">Connect to existing room</dialog-button>
+      <connect-existing-dialog-button button-style="big-button-secondary" text="Connect to existing room"></connect-existing-dialog-button>
       <!--TODO: что делают кнопки connect и create-->
     </div>
   </div>
@@ -23,11 +23,12 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import DialogButton from '@/components/DialogButton.vue';
 import HeaderView from '@/components/header.vue';
 import FooterView from '@/components/footer.vue';
 
 import svgLogo from '@/assets/logo.svg';
+import CreateRoomDialogButton from '@/components/CreateRoomDialogButton.vue';
+import ConnectExistingDialogButton from '@/components/ConnectExistingDialogButton.vue';
 
 export default defineComponent({
   name: 'HomeView',
@@ -38,9 +39,10 @@ export default defineComponent({
   },
 
   components: {
+    ConnectExistingDialogButton,
+    CreateRoomDialogButton,
     FooterView,
     HeaderView,
-    DialogButton,
   },
 });
 </script>

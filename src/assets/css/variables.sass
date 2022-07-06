@@ -4,3 +4,35 @@ $not-white: #fbfbfb
 $semi-gray: #717171
 $light-gray: #A7A7A7FF
 $font-color: #202020
+@mixin primary-button-styles
+  color: $not-white !important
+  background: rgb(51, 103, 115)
+  background: -moz-linear-gradient(45deg, rgba(51, 103, 115, 1) 0%, rgba(86, 184, 130, 1) 62%, rgba(146, 231, 109, 1) 100%)
+  background: -webkit-linear-gradient(45deg, rgba(51, 103, 115, 1) 0%, rgba(86, 184, 130, 1) 62%, rgba(146, 231, 109, 1) 100%)
+  background: linear-gradient(45deg, rgba(51, 103, 115, 1) 0%, rgba(86, 184, 130, 1) 62%, rgba(146, 231, 109, 1) 100%)
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#336773", endColorstr="#92e76d", GradientType=1)
+
+@mixin secondary-button-styles
+  color: $semi-gray !important
+  background-color: $not-white
+
+
+.big-button
+  font:
+    size: 2em
+  padding: 1em 1em 1em 1em
+  margin: 1em
+
+.button-primary
+  @include primary-button-styles
+
+.button-secondary
+  @include secondary-button-styles
+
+.big-button-primary
+  @extend .button-primary
+  @extend .big-button
+
+.big-button-secondary
+  @extend .button-secondary
+  @extend .big-button

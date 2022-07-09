@@ -1,19 +1,19 @@
 <template>
   <v-btn @click.stop="dialog = true" :class="buttonStyle" depressed rounded
-         block="true">
+         block>
     {{ text }}
   </v-btn>
-  <Modal enable-close="false" v-model="dialog" :title="text">
+  <Modal v-model="dialog" :title="text" @before-open="beforeOpen" @before-close="beforeClose">
     <v-form>
       <div id="form-wrapper">
-        <v-text-field color="#56b882" rounded variant="outlined" id="input-room-name" label="Enter room name"></v-text-field>
+        <v-text-field color="#56b882" variant="outlined" id="input-room-name" label="Enter room name"></v-text-field>
         <v-text-field color="#56b882" variant="outlined" id="input-username" label="Enter your username"></v-text-field>
         <v-switch
           v-model="is_closed_room"
           label="Closed room"
           color="#56b882">
         </v-switch>
-        <v-text-field color="#56b882" rounded variant="outlined" :disabled="!is_closed_room" id="password" label="Password"></v-text-field>
+        <v-text-field color="#56b882" variant="outlined" :disabled="!is_closed_room" id="password" label="Password"></v-text-field>
         <div class="float-right">
           <v-btn class="button-primary ml-4 mr-4" type="button" @click="dialog = false">Ok
           </v-btn>
@@ -28,6 +28,7 @@
 <!--TODO: MAKE SEPARATELY-->
 <script>
 import VueModal from '@kouts/vue-modal';
+import bodyScroll from 'body-scroll-freezer';
 
 export default {
   name: 'CreateRoomDialogButton',
@@ -39,6 +40,17 @@ export default {
       is_closed_room: false,
       password: String,
     };
+  },
+  mounted() {
+    bodyScroll.init();
+  },
+  methods: {
+    beforeOpen() {
+      bodyScroll.freeze();
+    },
+    beforeClose() {
+      bodyScroll.unfreeze();
+    },
   },
   props:
     {

@@ -4,7 +4,7 @@ export default async function loadFonts() {
 
   webFontLoader.load({
     google: {
-      families: ['Roboto', 'Rajdhani'],
+      families: ['Roboto', 'Rajdhani', 'Mulish'],
     },
   });
 }

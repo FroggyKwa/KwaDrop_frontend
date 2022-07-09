@@ -1,13 +1,15 @@
 <template>
   <v-btn @click.stop="dialog = true" :class="buttonStyle" depressed rounded
-         block="true">
+         block>
     {{ text }}
   </v-btn>
-  <Modal enable-close="false" v-model="dialog" :title="text" @before-open="beforeOpen" @before-close="beforeClose">
+  <Modal v-model="dialog" :title="text" @before-open="beforeOpen" @before-close="beforeClose">
     <v-form>
       <div id="form-wrapper">
-        <v-text-field color="#56b882" rounded variant="outlined" id="input-room-id" label="Enter roomID"></v-text-field>
-        <v-text-field color="#56b882" variant="outlined" id="input-username" label="Enter your username"></v-text-field>
+        <v-text-field color="#56b882" variant="outlined" id="input-room-id"
+                      label="Enter roomID"></v-text-field>
+        <v-text-field color="#56b882" variant="outlined" id="input-username"
+                      label="Enter your username"></v-text-field>
         <div class="float-right">
           <v-btn class="button-primary ml-4 mr-4" type="button" @click="dialog = false">Ok
           </v-btn>
@@ -31,8 +33,6 @@ export default {
       dialog: false,
       room_name: String,
       username: String,
-      is_closed_room: false,
-      password: String,
     };
   },
   mounted() {

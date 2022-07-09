@@ -1,6 +1,5 @@
 <template>
-  <header>
-    <v-app-bar shrink-on-scroll id="bar" elevation="0">
+    <v-app-bar absolute="true" density="compact" shrink-on-scroll id="bar" elevation="0">
       <v-btn v-ripple="false" @click="drawer = !drawer"
              class="d-flex d-sm-none">
         <font-awesome-icon id="dropdown-caret-icon" size="2x" icon="fa-solid fa-caret-down"/>
@@ -9,14 +8,15 @@
         <div id="logo">{{ appBarTitle }}</div>
       </router-link>
       <v-container class="d-none d-sm-block">
-        <v-row class="float-end nav-buttons">
+        <v-row class="float-end nav-buttons align-center">
           <v-col v-for="item in items" :key="item">
             <router-link to="about">{{ item }}</router-link>
           </v-col>
+          <slot name="profile-info"></slot>
         </v-row>
       </v-container>
     </v-app-bar>
-    <v-navigation-drawer color="$not-white" v-model="drawer" absolute temporary=true>
+    <v-navigation-drawer color="$not-white" v-model="drawer" absolute temporary>
       <v-item-group id="left-menu">
         <v-list-item v-for="item in items" :key="item">
           <v-list-item-title>
@@ -25,7 +25,6 @@
         </v-list-item>
       </v-item-group>
     </v-navigation-drawer>
-  </header>
 </template>
 <script lang='ts'>
 import { defineComponent } from 'vue';
@@ -47,10 +46,16 @@ export default defineComponent({
 
 <style scoped lang="sass">
 @import "../assets/css/variables"
+
+header
+  margin:
+    bottom: 5em!important
+  position: inherit !important
+
 #logo
   font:
     family: Rajdhani
-    weight: 300
+    weight: 900
     size: 3em
   letter-spacing: 10px
   color: $light-green

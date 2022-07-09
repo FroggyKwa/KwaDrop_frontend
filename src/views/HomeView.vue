@@ -1,6 +1,6 @@
 <template>
   <header-view app-bar-title="KwaDrop"/>
-  <div id="logo-img-wrapper" class="d-flex justify-space-between flex-row">
+  <div id="content-wrapper" class="d-flex justify-space-between flex-row">
     <v-img width="800" :src="svgLogo" alt="Logo" class="d-md-block d-none ml-16"></v-img>
     <div class="d-flex flex-column align-self-center mr-16">
       <div id="motive-wrapper" class="align-self-end">
@@ -8,9 +8,7 @@
           Light up your party with kwadrop! Let everyone decide what will play today!
         </p>
       </div>
-      <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!
-        <font-awesome-icon icon="fa-solid fa-balloons"/>
-      </span>
+      <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!</span>
       <create-room-dialog-button button-style='big-button-primary' text="Create room"></create-room-dialog-button>
       <span id="spacer-text" class="align-self-center">OR</span>
       <connect-existing-dialog-button button-style="big-button-secondary" text="Connect to existing room"></connect-existing-dialog-button>
@@ -49,8 +47,9 @@ export default defineComponent({
 
 <style lang="sass">
 @import "@/assets/css/variables"
-#logo-img-wrapper
+#content-wrapper
   padding: 100px 100px 0 0
+  margin-bottom: 15em
 
 #spacer-text
   font:

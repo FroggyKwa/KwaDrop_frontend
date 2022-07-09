@@ -18,3 +18,12 @@ export default defineComponent({
   },
 });
 </script>
+<style lang="sass">
+main
+  padding: 0 !important
+  margin: 0 !important
+
+body
+  min-width: 100vh
+  //min-height: 100vh
+</style>

@@ -1,17 +1,18 @@
 <template>
-  <v-btn @click.stop="dialog = true" :class="buttonStyle" depressed rounded
-         block>
-    {{ text }}
+  <v-btn @click.stop="dialog = true" size="x-large" icon class="mt-5">
+    <font-awesome-icon size="2xl" icon="fa-solid fa-gear" />
   </v-btn>
   <Modal v-model="dialog" :title="text" @before-open="beforeOpen" @before-close="beforeClose">
     <v-form>
       <div id="form-wrapper">
         <v-text-field color="#56b882" variant="outlined" id="input-room-id"
-                      label="Enter roomID"></v-text-field>
+                      label="Enter new room name"></v-text-field>
         <v-text-field color="#56b882" variant="outlined" id="input-username"
-                      label="Enter your username"></v-text-field>
+                      label="Enter your new username"></v-text-field>
+        <v-file-input prepend-icon="mdi-alien-outline" chips="true" show-size color="#56b882" variant="outlined" id="input-username"
+                      label="Choose avatar picture"></v-file-input>
         <div class="float-right">
-          <v-btn class="button-primary ml-4 mr-4" type="button" @click="dialog = false">Ok <!--TODO: Connect to room request-->
+          <v-btn class="button-primary ml-4 mr-4" type="button" @click="dialog = false">Ok <!--TODO: PATCH-->
           </v-btn>
           <v-btn class="button-secondary" type="button" @click="dialog = false">
             Cancel
@@ -21,17 +22,18 @@
     </v-form>
   </Modal>
 </template>
-<script>
-import bodyScroll from 'body-scroll-freezer';
-import VueModal from '@kouts/vue-modal';
 
-export default {
-  name: 'ConnectExistingDialogButton',
+<script>
+import { defineComponent } from 'vue';
+import VueModal from '@kouts/vue-modal';
+import bodyScroll from 'body-scroll-freezer';
+
+export default defineComponent({
+  name: 'openRoomSettingsBtn',
   data() {
     return {
       dialog: false,
-      room_name: String,
-      username: String,
+      text: 'Room settings',
     };
   },
   mounted() {
@@ -45,21 +47,16 @@ export default {
       bodyScroll.unfreeze();
     },
   },
-  props:
-    {
-      buttonStyle: String,
-      text: String,
-    },
   components:
     {
       Modal: VueModal,
     },
-};
+});
 </script>
 
 <style scoped lang="sass">
-@import "../assets/css/variables"
-
+@import "@/assets/css/variables.sass"
 #form-wrapper
   padding: 2em
+
 </style>

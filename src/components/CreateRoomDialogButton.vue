@@ -1,6 +1,6 @@
 <template>
   <v-btn @click.stop="dialog = true" :class="buttonStyle" depressed rounded
-         block>
+         block="true">
     {{ text }}
   </v-btn>
   <Modal v-model="dialog" :title="text" @before-open="beforeOpen" @before-close="beforeClose">
@@ -15,7 +15,7 @@
         </v-switch>
         <v-text-field color="#56b882" variant="outlined" :disabled="!is_closed_room" id="password" label="Password"></v-text-field>
         <div class="float-right">
-          <v-btn class="button-primary ml-4 mr-4" type="button" @click="dialog = false">Ok
+          <v-btn class="button-primary ml-4 mr-4" type="button" @click="dialog = false">Ok <!--TODO: CREATE ROOM REQUEST-->
           </v-btn>
           <v-btn class="button-secondary" type="button" @click="dialog = false">
             Cancel
@@ -25,7 +25,6 @@
     </v-form>
   </Modal>
 </template>
-<!--TODO: MAKE SEPARATELY-->
 <script>
 import VueModal from '@kouts/vue-modal';
 import bodyScroll from 'body-scroll-freezer';

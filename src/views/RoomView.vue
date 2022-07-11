@@ -21,23 +21,36 @@
           shortcut-listener-enabled="true"
         >
         </search-input>
-        <v-btn @click="queryVideo"><font-awesome-icon size="xl" icon="fa-solid fa-magnifying-glass"/></v-btn>
+        <v-btn @click="queryVideo">
+          <font-awesome-icon size="xl" icon="fa-solid fa-magnifying-glass"/>
+        </v-btn>
       </div>
     </template>
   </header-view>
+  <v-btn icon to="/" size="x-large" class="light-green-text ml-10 mb-16 d-inline-flex">
+    <font-awesome-icon size="2xl" icon="fa-solid fa-house"/>
+  </v-btn>
   <div class="d-flex justify-space-between">
     <user-list></user-list>
-    <div id="room-info-content" class="d-flex flex-column align-center">
-      <room-name :name="room_name"></room-name>
-      <room-id-input></room-id-input>
-    </div>
+    <v-hover v-slot="{ isHovering, props }">
+      <v-card id="room-info-content" :elevation="isHovering? 16: 2" v-bind="props"
+              class="d-flex flex-column info-card align-center">
+        <room-name :name="room_name"></room-name>
+        <room-id-input></room-id-input>
+        <open-room-settings-btn></open-room-settings-btn>
+        <div class="help-text-wrapper align-self-center">
+          <p id="help-text">Here you can configure your room!</p>
+        </div>
+      </v-card>
+    </v-hover>
   </div>
-  <footer-view></footer-view>
-  <audio-player :option="{
+  <footer-view>
+    <audio-player :option="{
       src: current_video.link,
       title: current_video.title,
       coverImage: current_video.cover_image,
     }"></audio-player>
+  </footer-view>
 </template>
 
 <script lang="ts">
@@ -50,6 +63,7 @@ import UserList from '@/components/user_list.vue';
 import RoomName from '@/components/RoomName.vue';
 import RoomIdInput from '@/components/RoomIdInput.vue';
 import SearchInput from '@/components/searchInput/SearchInput.vue';
+import openRoomSettingsBtn from '@/components/openRoomSettingsView.vue';
 
 const searchValue = ref('');
 
@@ -64,6 +78,7 @@ export default defineComponent({
     HeaderView,
     AudioPlayer,
     SearchInput,
+    openRoomSettingsBtn,
   },
   data() {
     return {
@@ -93,14 +108,33 @@ export default defineComponent({
   margin:
     bottom: 4em
   width: 100%
+  &:after
+    content: ''
+    width: 100%
+    margin-top: 30px
+    border: 1px solid darken($white-accent, 7%)
+    position: absolute
+    left: 0
+    top: 55%
+    z-index: 1
 
 #room-info-content
-  margin: 30px 100px 0 0
+  margin: 0px 100px 0 0
+  padding: 40px
 
 .search-input-wrapper
   width: 60%
 
 #search-bar
   width: 100%
+
+.help-text-wrapper
+  margin-top: 3.6em
+
+  #help-text
+    font:
+      size: 2em
+      weight: 700
+    color: $dark-green
 
 </style>

@@ -10,8 +10,8 @@
              @focusin="$event.target.select()"
       >
     </label>
-    <v-btn icon type="button" :disabled="!copyButton_status" class="copy-link-button" @click="copyRoomId">
-      <font-awesome-icon icon="fa-solid fa-copy"></font-awesome-icon>
+    <v-btn size="large" icon type="button" :disabled="!copyButton_status" class="copy-link-button" @click="copyRoomId">
+      <font-awesome-icon size="2xl" icon="fa-solid fa-copy"></font-awesome-icon>
     </v-btn>
   </div>
 </template>

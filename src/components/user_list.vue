@@ -3,18 +3,20 @@
     <v-card :elevation="isHovering? 16: 2" v-bind="props" id="users-list"
             class="d-flex flex-column info-card">
       <perfect-scrollbar>
-        <div class="title-wrapper">
-          <v-card-title id="card-title" class="bold text-h6">{{ users_count }} users connected
-          </v-card-title>
-        </div>        <div class="user-item d-flex flex-row" :key="user.username" v-for="user in users">
+        <v-card-title id="card-title" class="bold text-h6">
+          {{ users_count }} users connected
+        </v-card-title>
+        <div class="user-item d-flex flex-row" :key="user.username" v-for="user in users">
           <avatar-view id="avatar" tooltip_place="end" :image="user.avatar_url"
-                       :username="user.username"></avatar-view>
+                       :username="user.username">
+          </avatar-view>
           <v-card-actions class="action-buttons">
             <v-btn class="anger-buttons" variant="outlined" :loading="loading[1]"
                    :disabled="loading[1]" @click="load(1)" icon elevation="0">
               <font-awesome-icon size="xl" icon="fa-solid fa-ban"/>
             </v-btn>
-            <v-btn class="anger-buttons" variant="outlined" :loading="loading[2]" :disabled="loading[2]"
+            <v-btn class="anger-buttons" variant="outlined" :loading="loading[2]"
+                   :disabled="loading[2]"
                    @click="load(2)" icon elevation="0">
               <font-awesome-icon icon="fa-solid fa-bolt-lightning"/>
             </v-btn>

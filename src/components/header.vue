@@ -1,30 +1,34 @@
 <template>
-    <v-app-bar absolute="true" density="compact" shrink-on-scroll id="bar" elevation="0">
-      <v-btn v-ripple="false" @click="drawer = !drawer"
-             class="d-flex d-sm-none">
-        <font-awesome-icon id="dropdown-caret-icon" size="2x" icon="fa-solid fa-caret-down"/>
-      </v-btn>
-      <router-link to="/">
-        <div id="logo">KwaDrop</div>
-      </router-link>
-      <v-container class="d-none d-sm-block">
-        <v-row class="float-end nav-buttons align-center">
-          <v-col v-for="item in items" :key="item">
-            <router-link to="about">{{ item }}</router-link>
-          </v-col>
-          <slot name="profile-info"></slot>
-        </v-row>
-      </v-container>
-    </v-app-bar>
-    <v-navigation-drawer color="$not-white" v-model="drawer" absolute temporary>
-      <v-item-group id="left-menu">
-        <v-list-item v-for="item in items" :key="item">
-          <v-list-item-title>
-            <router-link :to="`/${item.toLowerCase()}`" class="left-menu-item">{{ item }}</router-link>
-          </v-list-item-title>
-        </v-list-item>
-      </v-item-group>
-    </v-navigation-drawer>
+  <v-app-bar absolute="true" density="compact" shrink-on-scroll id="bar" elevation="0">
+    <v-btn v-ripple="false" @click="drawer = !drawer"
+           class="d-flex d-sm-none">
+      <font-awesome-icon id="dropdown-caret-icon" size="2x" icon="fa-solid fa-caret-down"/>
+    </v-btn>
+    <router-link to="/">
+      <div id="logo">KwaDrop</div>
+    </router-link>
+      <slot name="search-bar"></slot>
+    <v-container class="d-none d-sm-block">
+      <v-row class="float-end nav-buttons align-center">
+        <v-col v-for="item in items" :key="item">
+          <router-link to="about">{{ item }}</router-link>
+        </v-col>
+        <slot name="profile-info"></slot>
+      </v-row>
+    </v-container>
+  </v-app-bar>
+  <v-navigation-drawer color="$not-white" v-model="drawer" absolute temporary>
+    <v-item-group id="left-menu">
+      <v-list-item v-for="item in items" :key="item">
+        <v-list-item-title>
+          <router-link :to="`/${item.toLowerCase()}`" class="left-menu-item">{{
+              item
+            }}
+          </router-link>
+        </v-list-item-title>
+      </v-list-item>
+    </v-item-group>
+  </v-navigation-drawer>
 </template>
 <script lang='ts'>
 import { defineComponent } from 'vue';
@@ -46,7 +50,7 @@ export default defineComponent({
 
 header
   margin:
-    bottom: 3em!important
+    bottom: 3em !important
   position: inherit !important
 
 #logo

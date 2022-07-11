@@ -6,6 +6,24 @@
                      username="Hello World"></avatar-view>
       </v-col>
     </template>
+    <template #search-bar>
+      <div id="search-bar" class="d-flex flex-row justify-center">
+        <search-input
+          placeholder="Click here to add music ..."
+          type="search"
+          v-model="searchValue"
+          search-icon="false"
+          clear-icon="true"
+          shortcut-icon="false"
+          hide-shortcut-icon-on-blur="true"
+          blur-on-esc="true"
+          select-on-focus="false"
+          shortcut-listener-enabled="true"
+        >
+        </search-input>
+        <v-btn @click="queryVideo"><font-awesome-icon size="xl" icon="fa-solid fa-magnifying-glass"/></v-btn>
+      </div>
+    </template>
   </header-view>
   <div class="d-flex justify-space-between">
     <user-list></user-list>
@@ -23,7 +41,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent } from 'vue';
+import { defineComponent, ref } from 'vue';
 import AudioPlayer from 'vue3-audio-player';
 import HeaderView from '@/components/header.vue';
 import AvatarView from '@/components/avatar.vue';
@@ -31,6 +49,9 @@ import FooterView from '@/components/footer.vue';
 import UserList from '@/components/user_list.vue';
 import RoomName from '@/components/RoomName.vue';
 import RoomIdInput from '@/components/RoomIdInput.vue';
+import SearchInput from '@/components/searchInput/SearchInput.vue';
+
+const searchValue = ref('');
 
 export default defineComponent({
   name: 'RoomView',
@@ -42,6 +63,7 @@ export default defineComponent({
     AvatarView,
     HeaderView,
     AudioPlayer,
+    SearchInput,
   },
   data() {
     return {
@@ -51,7 +73,13 @@ export default defineComponent({
         cover_image: 'https://secretmag.ru/thumb/1200x0/filters:quality(75):no_upscale()/imgs/2022/06/16/06/5452378/f29a30e7f02e6e9e9ae31d17e795367aa0f703bd.jpg',
       },
       room_name: 'Room name',
+      searchValue,
     };
+  },
+  methods: {
+    queryVideo() {
+      // pass
+    },
   },
 });
 </script>
@@ -65,6 +93,14 @@ export default defineComponent({
   margin:
     bottom: 4em
   width: 100%
+
 #room-info-content
   margin: 30px 100px 0 0
+
+.search-input-wrapper
+  width: 60%
+
+#search-bar
+  width: 100%
+
 </style>

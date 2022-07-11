@@ -3,7 +3,9 @@ import { createApp } from 'vue';
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { faCaretDown, faBan, faBoltLightning } from '@fortawesome/free-solid-svg-icons';
+import {
+  faCaretDown, faBan, faBoltLightning, faCopy,
+} from '@fortawesome/free-solid-svg-icons';
 import { faCopyright } from '@fortawesome/free-regular-svg-icons';
 
 import { VueModal } from '@kouts/vue-modal';
@@ -21,7 +23,7 @@ import './assets/css/variables.sass';
 import '@kouts/vue-modal/dist/vue-modal.css';
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css';
 
-library.add(faCaretDown, faCopyright, faBan, faBoltLightning);
+library.add(faCaretDown, faCopyright, faBan, faBoltLightning, faCopy);
 if (!loadFonts()) {
   // eslint-disable-next-line no-console
   console.log('Fonts are not loaded');

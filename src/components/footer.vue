@@ -1,5 +1,4 @@
 <template>
-  <div id="footer">
     <v-footer app bottom absolute padless class="footer">
       <v-row
         justify="center"
@@ -23,7 +22,6 @@
         </v-col>
       </v-row>
     </v-footer>
-  </div>
 </template>
 
 <script lang="ts">
@@ -45,13 +43,7 @@ export default {
 <style scoped lang="sass">
 @import "@/assets/css/variables"
 .footer
-  margin-top: 5em
+  margin-top: 3em
   background-color: $not-white
   color: $dark-green
-#footer
-  position: absolute
-  bottom: 0
-  left: 0
-  display: block
-  width: 100%
 </style>

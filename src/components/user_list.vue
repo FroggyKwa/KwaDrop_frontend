@@ -1,10 +1,12 @@
 <template>
   <v-hover v-slot="{ isHovering, props }">
     <v-card :elevation="isHovering? 16: 2" v-bind="props" id="users-list"
-            class="d-flex flex-column">
+            class="d-flex flex-column info-card">
       <perfect-scrollbar>
-        <v-card-title class="bold text-h6">Users:</v-card-title>
-        <div class="user-item d-flex flex-row" :key="user.username" v-for="user in users">
+        <div class="title-wrapper">
+          <v-card-title id="card-title" class="bold text-h6">{{ users_count }} users connected
+          </v-card-title>
+        </div>        <div class="user-item d-flex flex-row" :key="user.username" v-for="user in users">
           <avatar-view id="avatar" tooltip_place="end" :image="user.avatar_url"
                        :username="user.username"></avatar-view>
           <v-card-actions class="action-buttons">
@@ -12,7 +14,7 @@
                    :disabled="loading[1]" @click="load(1)" icon elevation="0">
               <font-awesome-icon size="xl" icon="fa-solid fa-ban"/>
             </v-btn>
-            <v-btn class="anger-buttons" variant="outlined" :loading="loading[2]" :disabled="loading[1]"
+            <v-btn class="anger-buttons" variant="outlined" :loading="loading[2]" :disabled="loading[2]"
                    @click="load(2)" icon elevation="0">
               <font-awesome-icon icon="fa-solid fa-bolt-lightning"/>
             </v-btn>
@@ -27,7 +29,7 @@
 import AvatarView from '@/components/avatar.vue';
 
 export default {
-  name: 'UserList',
+  room_name: 'UserList',
   components: { AvatarView },
   data() {
     return {
@@ -40,8 +42,41 @@ export default {
           username: 'Den Bakushev',
           // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
         },
+        {
+          username: 'FroggyKwa',
+          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'Den Bakushev',
+          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'FroggyKwa',
+          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'Den Bakushev',
+          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'FroggyKwa',
+          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'Den Bakushev',
+          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'FroggyKwa',
+          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
+        {
+          username: 'Den Bakushev',
+          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+        },
       ],
       loading: [],
+      users_count: 10,
     };
   },
   methods: {
@@ -100,15 +135,9 @@ export default {
 @import "@/assets/css/variables.sass"
 
 #users-list
-  display: inline-flex !important
-  flex-direction: column
-  margin:
-    left: 4em
-  padding: 10px
+  margin-left: 4em
+  height: 30em
   width: 30em
-  height: 20em
-  border-radius: 30px 5px 30px 5px
-  background-color: $not-white
 
 .ps
   height: inherit
@@ -128,8 +157,6 @@ export default {
     radius: 20px
 
 .anger-buttons
-  color: #c86a70
+  color: $danger-color
   background-color: transparent
-  margin-left: auto
-
 </style>

@@ -52,4 +52,6 @@ export default defineComponent({
     size: 2em
     weight: 900
   margin: 2em
+  color: #fff
+  mix-blend-mode: difference
 </style>

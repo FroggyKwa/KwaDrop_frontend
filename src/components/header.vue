@@ -5,7 +5,7 @@
         <font-awesome-icon id="dropdown-caret-icon" size="2x" icon="fa-solid fa-caret-down"/>
       </v-btn>
       <router-link to="/">
-        <div id="logo">{{ appBarTitle }}</div>
+        <div id="logo">KwaDrop</div>
       </router-link>
       <v-container class="d-none d-sm-block">
         <v-row class="float-end nav-buttons align-center">
@@ -20,7 +20,7 @@
       <v-item-group id="left-menu">
         <v-list-item v-for="item in items" :key="item">
           <v-list-item-title>
-            <router-link :to="item.toLowerCase()" class="left-menu-item">{{ item }}</router-link>
+            <router-link :to="`/${item.toLowerCase()}`" class="left-menu-item">{{ item }}</router-link>
           </v-list-item-title>
         </v-list-item>
       </v-item-group>
@@ -38,9 +38,6 @@ export default defineComponent({
       items: ['About', 'Contacts'],
     };
   },
-  props: {
-    appBarTitle: String,
-  },
 });
 </script>
 
@@ -49,7 +46,7 @@ export default defineComponent({
 
 header
   margin:
-    bottom: 5em!important
+    bottom: 3em!important
   position: inherit !important
 
 #logo
@@ -75,7 +72,7 @@ v-app-bar-title
   color: $light-green
 
 #left-menu
-  padding-top: 2em
+  padding-top: 7em
 
 #dropdown-caret-icon
   color: $dark-green

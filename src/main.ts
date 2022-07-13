@@ -4,10 +4,18 @@ import { createApp } from 'vue';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {
-  faCaretDown, faBan, faBoltLightning, faCopy, faMagnifyingGlass, faHouse, faGear,
+  faCaretDown,
+  faBan,
+  faBoltLightning,
+  faCopy,
+  faMagnifyingGlass,
+  faHouse,
+  faGear,
+  faArrowDown,
+  faArrowUp,
 }
   from '@fortawesome/free-solid-svg-icons';
-import { faCopyright } from '@fortawesome/free-regular-svg-icons';
+import { faCopyright, faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 import { VueModal } from '@kouts/vue-modal';
 
@@ -24,7 +32,7 @@ import './assets/css/variables.sass';
 import '@kouts/vue-modal/dist/vue-modal.css';
 import 'vue3-perfect-scrollbar/dist/vue3-perfect-scrollbar.css';
 
-library.add(faCaretDown, faCopyright, faBan, faBoltLightning, faCopy, faMagnifyingGlass, faHouse, faGear);
+library.add(faCaretDown, faCopyright, faBan, faBoltLightning, faCopy, faMagnifyingGlass, faHouse, faGear, faTrashCan, faArrowUp, faArrowDown);
 if (!loadFonts()) {
   // eslint-disable-next-line no-console
   console.log('Fonts are not loaded');

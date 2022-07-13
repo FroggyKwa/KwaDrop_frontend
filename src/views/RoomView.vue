@@ -2,8 +2,8 @@
   <header-view>
     <template #profile-info>
       <v-col>
-        <avatar-view tooltip_place="bottom" image="@/assets/logo.png"
-                     username="Hello World"></avatar-view>
+        <avatar-tooltip-view tooltip_place="bottom" image="@/assets/logo.png"
+                     username="Hello World"></avatar-tooltip-view>
       </v-col>
     </template>
     <template #search-bar>
@@ -12,13 +12,13 @@
           placeholder="Click here to add music ..."
           type="search"
           v-model="searchValue"
-          search-icon="false"
-          clear-icon="true"
+          :search-icon="false"
+          :clear-icon="true"
           shortcut-icon="false"
-          hide-shortcut-icon-on-blur="true"
-          blur-on-esc="true"
-          select-on-focus="false"
-          shortcut-listener-enabled="true"
+          :hide-shortcut-icon-on-blur="true"
+          :blur-on-esc="true"
+          :select-on-focus="false"
+          :shortcut-listener-enabled="true"
         >
         </search-input>
         <v-btn @click="queryVideo">
@@ -30,19 +30,10 @@
   <v-btn icon to="/" size="x-large" class="light-green-text ml-10 mb-16 d-inline-flex">
     <font-awesome-icon size="2xl" icon="fa-solid fa-house"/>
   </v-btn>
-  <div class="d-flex justify-space-between">
+  <div class="d-flex justify-space-between flex-sm-column flex-md-row">
     <user-list></user-list>
-    <v-hover v-slot="{ isHovering, props }">
-      <v-card id="room-info-content" :elevation="isHovering? 16: 2" v-bind="props"
-              class="d-flex flex-column info-card align-center">
-        <room-name :name="room_name"></room-name>
-        <room-id-input></room-id-input>
-        <open-room-settings-btn></open-room-settings-btn>
-        <div class="help-text-wrapper align-self-center">
-          <p id="help-text">Here you can configure your room!</p>
-        </div>
-      </v-card>
-    </v-hover>
+    <playlist-view :now-playing="now_playing"></playlist-view>
+    <room-configuration :room_name="room_name"></room-configuration>
   </div>
   <footer-view>
     <audio-player :option="{
@@ -57,28 +48,26 @@
 import { defineComponent, ref } from 'vue';
 import AudioPlayer from 'vue3-audio-player';
 import HeaderView from '@/components/header.vue';
-import AvatarView from '@/components/avatar.vue';
+import AvatarTooltipView from '@/components/AvatarTooltip.vue';
 import FooterView from '@/components/footer.vue';
 import UserList from '@/components/user_list.vue';
-import RoomName from '@/components/RoomName.vue';
-import RoomIdInput from '@/components/RoomIdInput.vue';
 import SearchInput from '@/components/searchInput/SearchInput.vue';
-import openRoomSettingsBtn from '@/components/openRoomSettingsView.vue';
+import RoomConfiguration from '@/components/RoomConfiguration.vue';
+import PlaylistView from '@/components/PlaylistView.vue';
 
 const searchValue = ref('');
 
 export default defineComponent({
   name: 'RoomView',
   components: {
-    RoomIdInput,
-    RoomName,
+    PlaylistView,
+    RoomConfiguration,
     UserList,
     FooterView,
-    AvatarView,
+    AvatarTooltipView,
     HeaderView,
     AudioPlayer,
     SearchInput,
-    openRoomSettingsBtn,
   },
   data() {
     return {
@@ -89,6 +78,7 @@ export default defineComponent({
       },
       room_name: 'Room name',
       searchValue,
+      now_playing: 1,
     };
   },
   methods: {
@@ -118,23 +108,9 @@ export default defineComponent({
     top: 55%
     z-index: 1
 
-#room-info-content
-  margin: 0px 100px 0 0
-  padding: 40px
-
 .search-input-wrapper
   width: 60%
 
 #search-bar
   width: 100%
-
-.help-text-wrapper
-  margin-top: 3.6em
-
-  #help-text
-    font:
-      size: 2em
-      weight: 700
-    color: $dark-green
-
 </style>

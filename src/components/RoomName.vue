@@ -19,7 +19,7 @@ export default defineComponent({
   data() {
     return {
       is_incorrect_room_name: false,
-      last_correct_name: '',
+      last_correct_name: this.name,
       current_room_name: this.name,
     };
   },
@@ -29,12 +29,14 @@ export default defineComponent({
     },
   methods: {
     onEnterRoomName(event: any) {
+      this.validate_room_name(event);
       event.target.blur();
       if (!this.is_incorrect_room_name) {
         this.last_correct_name = this.current_room_name!;
         // TODO: patch room-name request
       } else {
         this.current_room_name = this.last_correct_name;
+        this.is_incorrect_room_name = false;
       }
     },
     selectText(event: any) {

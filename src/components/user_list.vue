@@ -7,20 +7,31 @@
           {{ users_count }} users connected
         </v-card-title>
         <div class="user-item d-flex flex-row" :key="user.username" v-for="user in users">
-          <avatar-view id="avatar" tooltip_place="end" :image="user.avatar_url"
+          <avatar-view id="avatar" :image="user.avatar_url"
                        :username="user.username">
           </avatar-view>
-          <v-card-actions class="action-buttons">
-            <v-btn class="anger-buttons" variant="outlined" :loading="loading[1]"
-                   :disabled="loading[1]" @click="load(1)" icon elevation="0">
-              <font-awesome-icon size="xl" icon="fa-solid fa-ban"/>
-            </v-btn>
-            <v-btn class="anger-buttons" variant="outlined" :loading="loading[2]"
-                   :disabled="loading[2]"
-                   @click="load(2)" icon elevation="0">
-              <font-awesome-icon icon="fa-solid fa-bolt-lightning"/>
-            </v-btn>
-          </v-card-actions>
+          <span :class="{'bold light-green-text textarea':user.me === true}"
+                class="user-item-username">{{ user.username }}
+            <v-chip class="ma-2" v-if="user.me === true" color="#56b882">
+              <v-avatar left>
+                <v-icon color="#56b882">mdi-account-circle</v-icon>
+              </v-avatar>
+              You
+            </v-chip>
+          </span>
+          <div v-if="user.me !== true">
+            <v-card-actions class="action-buttons">
+              <v-btn id="ban-btn" class="anger-buttons" variant="outlined" :loading="loading[1]"
+                     :disabled="loading[1]" @click="load(1)" icon elevation="0">
+                <font-awesome-icon size="xl" icon="fa-solid fa-ban"/>
+              </v-btn>
+              <v-btn id="kick-btn" class="anger-buttons" variant="outlined" :loading="loading[2]"
+                     :disabled="loading[2]"
+                     @click="load(2)" icon elevation="0">
+                <font-awesome-icon icon="fa-solid fa-bolt-lightning"/>
+              </v-btn>
+            </v-card-actions>
+          </div>
         </div>
       </perfect-scrollbar>
     </v-card>
@@ -39,38 +50,7 @@ export default {
         {
           username: 'FroggyKwa',
           avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'Den Bakushev',
-          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'FroggyKwa',
-          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'Den Bakushev',
-          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'FroggyKwa',
-          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'Den Bakushev',
-          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'FroggyKwa',
-          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'Den Bakushev',
-          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-        {
-          username: 'FroggyKwa',
-          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
+          me: true,
         },
         {
           username: 'Den Bakushev',
@@ -137,9 +117,9 @@ export default {
 @import "@/assets/css/variables.sass"
 
 #users-list
-  margin-left: 4em
-  height: 30em
-  width: 30em
+  margin: 4em
+  min-height: 30em
+  min-width: 30em
 
 .ps
   height: inherit
@@ -161,4 +141,8 @@ export default {
 .anger-buttons
   color: $danger-color
   background-color: transparent
+
+.user-item-username
+  font-size: 1.2em
+  letter-spacing: 1px
 </style>

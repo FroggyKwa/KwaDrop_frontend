@@ -1,0 +1,10 @@
+version: '3.8'
+services:
+  app:
+    build: .
+    image: kwadrop/web-app
+    container_name: kwadrop-web-app
+    restart: unless-stopped
+    ports:
+      - "8021:8080"
+

@@ -1,4 +1,5 @@
 import { createApp } from 'vue';
+import titleMixin from '@/mixins/titleMixin';
 
 // font awesome
 import { library } from '@fortawesome/fontawesome-svg-core';
@@ -40,6 +41,7 @@ if (!loadFonts()) {
 
 createApp(App)
   .component('font-awesome-icon', FontAwesomeIcon)
+  .mixin(titleMixin)
   .use(PerfectScrollbar)
   .use(VueModal)
   .use(router)

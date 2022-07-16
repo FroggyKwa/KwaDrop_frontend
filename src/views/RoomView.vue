@@ -44,7 +44,7 @@
   </footer-view>
 </template>
 
-<script lang="ts">
+<script>
 import { defineComponent, ref } from 'vue';
 import AudioPlayer from 'vue3-audio-player';
 import HeaderView from '@/components/header.vue';
@@ -54,6 +54,7 @@ import UserList from '@/components/user_list.vue';
 import SearchInput from '@/components/searchInput/SearchInput.vue';
 import RoomConfiguration from '@/components/RoomConfiguration.vue';
 import PlaylistView from '@/components/PlaylistView.vue';
+import ApiService from '@/api/api-service';
 
 const searchValue = ref('');
 
@@ -79,15 +80,45 @@ export default defineComponent({
       room_name: 'Room name',
       searchValue,
       now_playing: 1,
+      users: [],
     };
   },
-  methods: {
-    queryInfo() {
-      return { room_name: 'test' };
+  title() {
+    return `Room ${localStorage.room_name}`;
+  },
+  props: {
+    room_id: {
+      type: Number,
+      required: true,
     },
   },
-  title() {
-    return this.queryInfo().room_name;
+
+  beforeRouteEnter(to, from, next) {
+    if (localStorage.user_id !== 'null') {
+      if (to.params.room_id !== localStorage.room_id) {
+        const data = ApiService.connectToRoom(to.params.room_id)
+          .then((result) => {
+            if (result.status !== 200) {
+              next({ name: 'home' });
+            } else {
+              next();
+            }
+          });
+      } else {
+        next();
+      }
+    } else {
+      next({ name: 'home' });
+    }
+  },
+  beforeRouteLeave(to, from, next) { // todo: if host => delete room
+    const answer = window.confirm('Do you really want to leave? You will be disconnected!');
+    if (answer) {
+      next();
+    } else {
+      next(false);
+    }
+    ApiService.disconnect();
   },
 });
 </script>

@@ -1,20 +1,42 @@
 <template>
   <v-app>
     <v-main>
-      <router-view />
+      <router-view/>
     </v-main>
   </v-app>
 </template>
 
 <script lang="ts">
 import { defineComponent } from 'vue';
+import ApiService from '@/api/api-service';
 
 export default defineComponent({
   room_name: 'App',
 
   data() {
-    return {
-    };
+    return {};
+  },
+  methods: {
+    async initialize_session() {
+      ApiService.whoami()
+        .catch((response) => {
+          if (response.response.status === 401) {
+            localStorage.clear();
+            ApiService.createSession()
+              .catch((error) => {
+                console.log(error);
+                return false;
+              })
+              .then((data) => {
+                if (!data) return;
+                ApiService.whoami();
+              });
+          }
+        });
+    },
+  },
+  created() {
+    this.initialize_session();
   },
 });
 </script>
@@ -25,5 +47,4 @@ main
 
 body
   min-width: 100vh
-  //min-height: 100vh
 </style>

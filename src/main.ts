@@ -27,7 +27,6 @@ import router from './router';
 import vuetify from './plugins/vuetify';
 import loadFonts from './plugins/webfontloader';
 
-import '@/assets/logo.png';
 import './assets/css/global.sass';
 import './assets/css/variables.sass';
 import '@kouts/vue-modal/dist/vue-modal.css';

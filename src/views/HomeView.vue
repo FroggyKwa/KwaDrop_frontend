@@ -9,9 +9,13 @@
         </p>
       </div>
       <span id="hidden-text" class="align-self-end">Start your <span class="rainbow">party</span> with us!</span>
-      <create-room-dialog-button button-style='big-button-primary' text="Create room"></create-room-dialog-button>
+      <create-room-dialog-button v-model:dialog="create_room_dialog"
+                                 button-style='big-button-primary'
+                                 text="Create room"></create-room-dialog-button>
       <span id="spacer-text" class="align-self-center">OR</span>
-      <connect-existing-dialog-button button-style="big-button-secondary" text="Connect to existing room"></connect-existing-dialog-button>
+      <connect-existing-dialog-button v-model:dialog="connect_to_room_dialog"
+                                      button-style="big-button-secondary"
+                                      text="Connect to existing room"></connect-existing-dialog-button>
       <!--TODO: что делают кнопки connect и create-->
     </div>
   </div>
@@ -27,12 +31,17 @@ import FooterView from '@/components/footer.vue';
 import svgLogo from '@/assets/logo.svg';
 import CreateRoomDialogButton from '@/components/CreateRoomDialogButton.vue';
 import ConnectExistingDialogButton from '@/components/ConnectExistingDialogButton.vue';
+import '@/assets/logo.png';
+import ApiService from '@/api/api-service';
 
 export default defineComponent({
   name: 'HomeView',
   data() {
     return {
       svgLogo,
+      is_authenticated: false,
+      create_room_dialog: false,
+      connect_to_room_dialog: false,
     };
   },
 

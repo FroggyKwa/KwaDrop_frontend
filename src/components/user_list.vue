@@ -6,20 +6,21 @@
         <v-card-title id="card-title" class="bold text-h6">
           {{ users_count }} users connected
         </v-card-title>
-        <div class="user-item d-flex flex-row" :key="user.username" v-for="user in users">
-          <avatar-view id="avatar" :image="user.avatar_url"
-                       :username="user.username">
+        <div class="user-item d-flex flex-row" :key="user.user.name" v-for="user in users">
+          <avatar-view id="avatar" :image="user.user.avatar_url"
+                       :username="user.user.name">
           </avatar-view>
-          <span :class="{'bold light-green-text textarea':user.me === true}"
-                class="user-item-username">{{ user.username }}
-            <v-chip class="ma-2" v-if="user.me === true" color="#56b882">
+          <span
+            :class="{'bold light-green-text textarea':user.user.id === Number(user_id)}"
+            class="user-item-username">{{ user.user.name }}
+            <v-chip class="ma-2" v-if="user.user.id === Number(user_id)" color="#56b882">
               <v-avatar left>
                 <v-icon color="#56b882">mdi-account-circle</v-icon>
               </v-avatar>
               You
             </v-chip>
           </span>
-          <div v-if="user.me !== true">
+          <div v-if="user.user.me !== true">
             <v-card-actions class="action-buttons">
               <v-btn id="ban-btn" class="anger-buttons" variant="outlined" :loading="loading[1]"
                      :disabled="loading[1]" @click="load(1)" icon elevation="0">
@@ -40,26 +41,22 @@
 
 <script>
 import AvatarView from '@/components/avatar.vue';
+import ApiService from '@/api/api-service';
 
 export default {
   room_name: 'UserList',
   components: { AvatarView },
   data() {
     return {
-      users: [
-        {
-          username: 'FroggyKwa',
-          avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-          me: true,
-        },
-        {
-          username: 'Den Bakushev',
-          // avatar_url: 'https://www.kaleido.ai/packs/media/images/ukraine_dove-b9f00234cf153bae7c4e6bc5331a043e.png',
-        },
-      ],
       loading: [],
-      users_count: 10,
+      users: [],
+      user_id: localStorage.user_id,
     };
+  },
+  computed: {
+    users_count() {
+      return this.users.length;
+    },
   },
   methods: {
     load(i) {
@@ -67,6 +64,18 @@ export default {
       // eslint-disable-next-line no-return-assign
       setTimeout(() => (this.loading[i] = false), 3000);
     },
+    async getUsers() {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this;
+      this.users = await ApiService.getRoommates()
+        .then((response) => {
+          self.users = response.data.users;
+          return self.users;
+        });
+    },
+  },
+  async mounted() {
+    await this.getUsers();
   },
 };
 </script>

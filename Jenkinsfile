@@ -14,11 +14,8 @@ pipeline {
                 branch "master"
             }
             steps {
-                withCredentials([file(credentialsId: "${NAME}_env", variable: "secret_file")]) {
                     sh "pwd"
                     sh "whoami"
-                    sh "rm -rf .env"
-                    sh "cp \"${secret_file}\" \".env\""
                     echo "${GIT_COMMIT_MSG}"
                     echo "Deploying and Building..."
                     sh "sendNotification \"Found new commit **${GIT_COMMIT_MSG}**\""
@@ -30,7 +27,6 @@ pipeline {
                     sh "docker-compose up -d"
                     echo "Deployed!"
                     sh "sendNotification \"START PROTOCOL KILL @froggy_kwa\""
-                }
             }
         }
 
@@ -39,10 +35,7 @@ pipeline {
                 branch "dev"
             }
             steps {
-                withCredentials([file(credentialsId: "${NAME_DEV}_env", variable: "secret_file")]) {
                     sh "pwd"
-                    sh "rm -rf .env"
-                    sh "cp \"${secret_file}\" \".env\""
                     echo "Deploying and Building..."
                     sh "sendNotification \"Found new commit **${GIT_COMMIT_MSG}**\""
                     sh "sendNotification \"#${NAME_DEV} Running tests...\""
@@ -53,7 +46,6 @@ pipeline {
                     sh "docker-compose up -d"
                     echo "Deployed!"
                     sh "sendNotification \"START PROTOCOL KILL @froggy_kwa\""
-               }
             }
         }
     }

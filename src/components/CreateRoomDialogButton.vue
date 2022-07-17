@@ -59,7 +59,6 @@ export default {
       try {
         await ApiService.createRoom(this.room_name, this.room_password)
           .then(async (result) => {
-            console.log(result);
             if (result.status === 409) {
               await ApiService.disconnect();
               await ApiService.whoami();

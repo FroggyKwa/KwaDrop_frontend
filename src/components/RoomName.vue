@@ -49,7 +49,6 @@ export default defineComponent({
     validate_room_name(event: any) {
       const text = event.target.textContent;
       this.is_incorrect_room_name = text === '' || text.length > 32;
-      console.log(this.last_correct_name);
     },
     onInputHandler(event: any) {
       this.current_room_name = event.target.textContent;
@@ -62,7 +61,6 @@ export default defineComponent({
       const self = this;
       ApiService.getRoommates().then((response) => {
         self.current_room_name = response.data.users[0].room.name;
-        console.log(response.data);
       });
     }, 10000);
   },

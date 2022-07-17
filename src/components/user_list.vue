@@ -8,7 +8,7 @@
         </v-card-title>
         <div class="user-item d-flex flex-row" :key="user.user.name" v-for="user in users">
           <avatar-view :class="{ 'rainbow': user.usertype === 0 }" id="avatar"
-                       :image="user.user.avatar_url"
+                       :image="user.user.avatar ? getImg(user.user.avatar): undefined"
                        :username="user.user.name">
           </avatar-view>
           <span
@@ -64,10 +64,8 @@ export default {
     },
   },
   methods: {
-    load(i) {
-      this.loading[i] = true;
-      // eslint-disable-next-line no-return-assign
-      setTimeout(() => (this.loading[i] = false), 3000);
+    getImg(url) {
+      return `http://localhost:7721/get_img?path=${url}`;
     },
     getUsers() {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -88,7 +86,6 @@ export default {
   mounted() {
     this.getUsers();
     setInterval(() => (this.getUsers()), 10000);
-    this.$emit('users', this.users);
   },
   props: {
     usersListToRoom: Function,

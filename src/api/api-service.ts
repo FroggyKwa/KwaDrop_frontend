@@ -203,4 +203,15 @@ export default new class ApiService {
       });
     return data;
   }
+
+  async updateAvatar(newAvatar: File) {
+    const formData = new FormData();
+    formData.append('avatar', newAvatar, newAvatar.name);
+    const data = await this.axios.patch('/update_avatar', formData)
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error;
+      });
+  }
 }();

@@ -1,5 +1,5 @@
 <template>
-  <v-avatar id="avatar" :color="getRandomColor" size="72">
+  <v-avatar id="avatar" :color="getRandomColor" size="90">
     <v-img
       :src="image"
       v-if="!image === false" alt=""></v-img>

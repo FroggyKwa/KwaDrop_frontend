@@ -56,19 +56,23 @@ export default {
       bodyScroll.unfreeze();
     },
     async createNewRoom() {
-      await ApiService.createRoom(this.room_name, this.room_password)
-        .then(async (result) => {
-          console.log(result);
-          if (result.status === 409) {
-            await ApiService.disconnect();
-            await ApiService.whoami().then((res) => console.log(res));
-            await ApiService.createRoom(this.room_name, this.password);
-          }
-          await this.$router.push({
-            name: 'room',
-            params: { room_id: localStorage.room_id },
+      try {
+        await ApiService.createRoom(this.room_name, this.room_password)
+          .then(async (result) => {
+            console.log(result);
+            if (result.status === 409) {
+              await ApiService.disconnect();
+              await ApiService.whoami();
+              await ApiService.createRoom(this.room_name, this.password);
+            }
+            await this.$router.push({
+              name: 'room',
+              params: { room_id: localStorage.room_id },
+            });
           });
-        });
+      } catch (e) {
+        console.log(e);
+      }
     },
     onSubmitBtn() {
       this.dialog = false;

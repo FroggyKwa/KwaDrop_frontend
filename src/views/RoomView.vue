@@ -32,11 +32,11 @@
     <font-awesome-icon size="2xl" icon="fa-solid fa-house"/>
   </v-btn>
   <div class="d-flex justify-space-between flex-sm-column flex-md-row">
-    <user-list></user-list>
-    <playlist-view :now-playing="now_playing"></playlist-view>
+    <user-list :users-list-to-room="getUsers"></user-list>
+    <playlist-view :songs-list-to-room="getSongs"></playlist-view>
     <room-configuration :room_name="room_name"></room-configuration>
   </div>
-  <audio-player :option="{
+  <audio-player @ended="onSongEnded" :option="{
       src: current_song.link,
       title: current_song.title,
       coverImage: current_song.cover_image,
@@ -74,19 +74,21 @@ export default defineComponent({
   data() {
     return {
       current_song: {
-        link: 'https://www.youtube.com/watch?v=ZQR0OCczRWM&ab_channel=VladMishustin',
-        title: 'BTS ',
-        cover_image: 'https://secretmag.ru/thumb/1200x0/filters:quality(75):no_upscale()/imgs/2022/06/16/06/5452378/f29a30e7f02e6e9e9ae31d17e795367aa0f703bd.jpg',
+        link: '',
+        title: '',
+        cover_image: '',
       },
-      room_name: 'Room name',
+      room_name: localStorage.room_name,
       searchValue,
-      now_playing: 1,
       users: [],
+      songs: [],
       api: ApiService,
+      user_id: localStorage.user_id,
+      host_id: localStorage.host_id,
     };
   },
   title() {
-    return `Room ${localStorage.room_name}`;
+    return `Room ${localStorage.room_id}`;
   },
   props: {
     room_id: {
@@ -95,23 +97,55 @@ export default defineComponent({
     },
   },
 
+  methods: {
+    onSongEnded() {
+      this.loadSongsToPlayer();
+    },
+    getUsers(value) {
+      this.users = value;
+      this.room_name = this.users[0].room.name;
+    },
+    getSongs(value) {
+      this.songs = value;
+      if (this.current_song.link === '') {
+        this.loadSongsToPlayer();
+      }
+    },
+    loadSongsToPlayer() {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this;
+      if (this.songs.length) {
+        ApiService.PlayNext()
+          .then((song_response) => {
+            self.current_song.link = song_response.data.link;
+            self.current_song.title = song_response.data.title;
+            self.current_song.cover_image = song_response.data.avatar;
+          });
+      }
+    },
+  },
+
   beforeRouteEnter(to, from, next) {
-    try {
-      ApiService.disconnect();
-    } catch (error) {
-      console.log(error);
-    }
-    if (localStorage.user_id !== 'null') {
-      const data = ApiService.connectToRoom(to.params.room_id, localStorage.room_password)
-        .then((result) => {
-          if (result.status !== 200) {
-            next({ name: 'home' });
-          } else {
-            next();
-          }
-        });
+    if (to.params.room_id !== localStorage.getItem('host_room')) {
+      try {
+        ApiService.disconnect();
+      } catch (error) {
+        console.log(error);
+      }
+      if (localStorage.user_id !== 'null') {
+        const data = ApiService.connectToRoom(to.params.room_id, localStorage.room_password)
+          .then((result) => {
+            if (result.status !== 200) {
+              next({ name: 'home' });
+            } else {
+              next();
+            }
+          });
+      } else {
+        next({ name: 'home' });
+      }
     } else {
-      next({ name: 'home' });
+      next();
     }
   },
   beforeRouteLeave(to, from, next) { // todo: if host => delete room

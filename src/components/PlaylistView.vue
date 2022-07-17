@@ -10,15 +10,15 @@
           <draggable
             :list="songs"
             :disabled="!enabled"
-            item-key="name"
+            item-key="id"
+            @change="onSongListChange"
             ghost-class="ghost"
-            :move="checkMove"
             @start="dragging = true"
             @end="dragging = false"
           >
             <template #item="{ element }">
               <div class="song-item d-flex flex-row"
-                   :class="{ 'not-draggable': !enabled, 'textarea': NowPlaying }">
+                   :class="{ 'not-draggable': element.status === 1}">
                 <v-tooltip location="bottom">
                   <template #activator={props}>
                     <v-badge
@@ -33,9 +33,9 @@
                   <span>{{ element.user.name }}</span>
                 </v-tooltip>
                 <v-hover v-slot="{ isHovering, props }">
-                  <marquee-text :duration="10" v-bind="props" :paused="isHovering" :reverse="true"
-                                :repeat="2">
-                    <span class="song-name">{{ element.name }}</span>
+                  <marquee-text :duration="5" v-bind="props" :paused="isHovering"
+                                :repeat="4">
+                    <span class="song-name">{{ element.title }}</span>
                   </marquee-text>
                 </v-hover>
                 <div v-if="element.status !== 1">
@@ -49,13 +49,13 @@
                     <v-btn id="arrow-up" class="light-green-text" variant="outlined"
                            :loading="loading[2]"
                            :disabled="loading[2] || songs.indexOf(element) === 0"
-                           @click="load(2)" icon elevation="0">
+                           @click="upArrowClick(element.queue_num)" icon elevation="0">
                       <font-awesome-icon size="xl" icon="fa-solid fa-arrow-up"/>
                     </v-btn>
                     <v-btn id="arrow-down" class="light-green-text" variant="outlined"
                            :loading="loading[3]"
                            :disabled="loading[3] || songs.indexOf(element) === songs.length - 1"
-                           @click="load(3)" icon elevation="0">
+                           @click="downArrowClick(element.queue_num)" icon elevation="0">
                       <font-awesome-icon size="xl" icon="fa-solid fa-arrow-down"/>
                     </v-btn>
                   </v-card-actions>
@@ -95,7 +95,7 @@ export default defineComponent({
   },
   props:
     {
-      NowPlaying: Number,
+      songsListToRoom: Function,
     },
   computed: {
     draggingInfo() {
@@ -106,13 +106,17 @@ export default defineComponent({
     },
   },
   methods: {
-    checkMove(event) {
-      window.console.log(`Future index: ${event.draggedContext.futureIndex}`);
+    onSongListChange(data) {
+      const [song_old, song_new] = [this.songs[data.moved.oldIndex], this.songs[data.moved.newIndex]];
+      ApiService.swapSongs(song_old.queue_num, song_new.queue_num);
     },
-    load(i) {
-      this.loading[i] = true;
-      // eslint-disable-next-line no-return-assign
-      setTimeout(() => (this.loading[i] = false), 3000);
+    upArrowClick(queue_num) {
+      this.loading[2] = true;
+      ApiService.swapSongs(queue_num, queue_num - 1);
+    },
+    downArrowClick(queue_num) {
+      this.loading[3] = true;
+      ApiService.swapSongs(queue_num, queue_num + 1);
     },
     getSongs() {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
@@ -120,6 +124,7 @@ export default defineComponent({
       ApiService.getPlaylist()
         .then((response) => {
           self.songs = response.data.songs;
+          this.songsListToRoom(this.songs);
           return self.songs;
         });
     },
@@ -130,14 +135,16 @@ export default defineComponent({
   },
   mounted() {
     this.getSongs();
-    setInterval(() => (this.getSongs()), 10000);
+    setInterval(() => (this.getSongs()), 5000);
   },
 
   watch: {
     songs(newArr, oldArr) {
-      console.log(newArr.length);
-      console.log(oldArr.length);
       if (oldArr.length > newArr.length) this.loading[1] = false;
+      else if (oldArr.length === newArr.length) {
+        this.loading[2] = false;
+        this.loading[3] = false;
+      }
     },
   },
 });

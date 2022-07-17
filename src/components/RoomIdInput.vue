@@ -23,7 +23,7 @@ export default defineComponent({
   name: 'RoomIdInput',
   data() {
     return {
-      room_id: 'AvFasvgf',
+      room_id: localStorage.room_id,
       copyButton_status: true,
     };
   },

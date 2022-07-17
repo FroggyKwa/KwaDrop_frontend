@@ -74,6 +74,12 @@ export default {
       const self = this;
       ApiService.getRoommates()
         .then((response) => {
+          this.usersListToRoom(response.data.users);
+          for (let i = 0; i < response.data.users.length; i += 1) {
+            if (response.data.users[i].usertype === 0) {
+              localStorage.host_id = response.data.users[i].id;
+            }
+          }
           self.users = response.data.users;
           return self.users;
         });
@@ -82,6 +88,10 @@ export default {
   mounted() {
     this.getUsers();
     setInterval(() => (this.getUsers()), 10000);
+    this.$emit('users', this.users);
+  },
+  props: {
+    usersListToRoom: Function,
   },
 };
 </script>
@@ -137,7 +147,7 @@ export default {
   min-width: 30em
 
 .ps
-  height: inherit
+  height: 30em
   width: inherit
 
 .user-item

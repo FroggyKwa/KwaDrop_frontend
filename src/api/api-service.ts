@@ -80,6 +80,7 @@ export default new class ApiService {
       .then((room) => {
         localStorage.room_id = room.data.id;
         localStorage.room_name = room.data.name;
+        localStorage.host_room = room.data.id;
         localStorage.room_password = password;
         return room;
       })
@@ -145,6 +146,56 @@ export default new class ApiService {
 
   async deleteSong(queue_num: number) {
     const data = await this.axios.delete('/delete_song', { params: { queue_num } })
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+    return data;
+  }
+
+  async PlayNext() {
+    const data = await this.axios.patch('/playnext')
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+    return data;
+  }
+
+  async PlayPrev() {
+    const data = await this.axios.patch('/playprev')
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+    return data;
+  }
+
+  async swapSongs(queue_num1: number, queue_num2: number) {
+    const data = await this.axios.patch('/swap_songs', {}, {
+      params: {
+        queue_num1,
+        queue_num2,
+      },
+    })
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+    return data;
+  }
+
+  async editRoom(room_name?: string, password?: string) {
+    const data = await this.axios.patch('/edit_room', {}, {
+      params: {
+        name: room_name || undefined,
+        password: password || undefined,
+      },
+    })
       .then((response) => response)
       .catch((error) => {
         console.log(error);

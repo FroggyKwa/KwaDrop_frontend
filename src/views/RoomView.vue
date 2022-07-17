@@ -2,8 +2,8 @@
   <header-view>
     <template #profile-info>
       <v-col>
-        <avatar-tooltip-view tooltip_place="bottom" image="@/assets/logo.png"
-                             username="Hello World"></avatar-tooltip-view>
+        <avatar-tooltip-view tooltip_place="bottom" :image="getImg(this.current_user.avatar)"
+                             :username="this.current_user.name"></avatar-tooltip-view>
       </v-col>
     </template>
     <template #search-bar>
@@ -32,7 +32,7 @@
     <font-awesome-icon size="2xl" icon="fa-solid fa-house"/>
   </v-btn>
   <div class="d-flex justify-space-between flex-sm-column flex-md-row">
-    <user-list :users-list-to-room="getUsers"></user-list>
+    <user-list :get-img="getImg" :users-list-to-room="getUsers"></user-list>
     <playlist-view :songs-list-to-room="getSongs"></playlist-view>
     <room-configuration :room_name="room_name"></room-configuration>
   </div>
@@ -78,6 +78,7 @@ export default defineComponent({
         title: '',
         cover_image: '',
       },
+      current_user: {},
       room_name: localStorage.room_name,
       searchValue,
       users: [],
@@ -98,11 +99,20 @@ export default defineComponent({
   },
 
   methods: {
+    getImg(url) {
+      return `http://localhost:7721/get_img?path=${url}`;
+    },
     onSongEnded() {
       this.loadSongsToPlayer();
     },
     getUsers(value) {
       this.users = value;
+      for (let i = 0; i < value.length; i += 1) {
+        if (String(value[i].user.id) === localStorage.user_id) {
+          this.current_user = value[i].user;
+        }
+      }
+      console.log(this.current_user);
       this.room_name = this.users[0].room.name;
     },
     getSongs(value) {

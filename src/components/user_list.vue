@@ -64,9 +64,6 @@ export default {
     },
   },
   methods: {
-    getImg(url) {
-      return `http://localhost:7721/get_img?path=${url}`;
-    },
     getUsers() {
       // eslint-disable-next-line @typescript-eslint/no-this-alias
       const self = this;
@@ -89,6 +86,7 @@ export default {
   },
   props: {
     usersListToRoom: Function,
+    getImg: Function,
   },
 };
 </script>

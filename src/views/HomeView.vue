@@ -32,9 +32,9 @@ import svgLogo from '@/assets/logo.svg';
 import CreateRoomDialogButton from '@/components/CreateRoomDialogButton.vue';
 import ConnectExistingDialogButton from '@/components/ConnectExistingDialogButton.vue';
 import '@/assets/logo.png';
-import ApiService from '@/api/api-service';
 
 export default defineComponent({
+  title: 'Home - KwaDrop',
   name: 'HomeView',
   data() {
     return {
@@ -81,10 +81,5 @@ export default defineComponent({
     weight: 700
     size: 1.6em
   color: $light-gray
-
-  .rainbow
-    background: linear-gradient(to right, #ef5350, #f48fb1, #7e57c2, #2196f3, #26c6da, #43a047, #eeff41, #f9a825, #ff5722)
-    -webkit-background-clip: text
-    -webkit-text-fill-color: transparent
 
 </style>

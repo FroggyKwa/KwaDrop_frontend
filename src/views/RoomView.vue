@@ -27,7 +27,8 @@
       </div>
     </template>
   </header-view>
-  <v-btn icon to="/" size="x-large" class="light-green-text ml-10 mb-16 d-inline-flex">
+  <v-btn icon @click="api.disconnect" to="/" size="x-large"
+         class="light-green-text ml-10 mb-16 d-inline-flex">
     <font-awesome-icon size="2xl" icon="fa-solid fa-house"/>
   </v-btn>
   <div class="d-flex justify-space-between flex-sm-column flex-md-row">
@@ -81,6 +82,7 @@ export default defineComponent({
       searchValue,
       now_playing: 1,
       users: [],
+      api: ApiService,
     };
   },
   title() {
@@ -94,19 +96,20 @@ export default defineComponent({
   },
 
   beforeRouteEnter(to, from, next) {
+    try {
+      ApiService.disconnect();
+    } catch (error) {
+      console.log(error);
+    }
     if (localStorage.user_id !== 'null') {
-      if (to.params.room_id !== localStorage.room_id) {
-        const data = ApiService.connectToRoom(to.params.room_id)
-          .then((result) => {
-            if (result.status !== 200) {
-              next({ name: 'home' });
-            } else {
-              next();
-            }
-          });
-      } else {
-        next();
-      }
+      const data = ApiService.connectToRoom(to.params.room_id, localStorage.room_password)
+        .then((result) => {
+          if (result.status !== 200) {
+            next({ name: 'home' });
+          } else {
+            next();
+          }
+        });
     } else {
       next({ name: 'home' });
     }

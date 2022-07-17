@@ -3,7 +3,9 @@
     <v-card id="playlist" :elevation="isHovering? 16: 2" v-bind="props"
             class="d-flex flex-column info-card">
       <perfect-scrollbar>
-        <h1>Current playlist:</h1>
+        <h1>Current playlist: <span>{{
+            songs_count
+          }} {{ songs_count > 1 || songs_count === 0 ? 'songs' : 'song' }}</span></h1>
         <ul class="playlist">
           <draggable
             :list="songs"
@@ -18,16 +20,17 @@
               <div class="song-item d-flex flex-row"
                    :class="{ 'not-draggable': !enabled, 'textarea': NowPlaying }">
                 <v-tooltip location="bottom">
-                  <template #activator = {props}>
-                    <v-badge avatar
-                             bordered
-                             overlap
-                             v-bind="props"
+                  <template #activator={props}>
+                    <v-badge
+                      :color="element.status === 1? '#56b882' :'transparent'"
+                      bordered
+                      overlap
+                      v-bind="props"
                     >
-                      <avatar-view :image="element.cover_image"></avatar-view>
+                      <avatar-view :image="element.avatar"></avatar-view>
                     </v-badge>
                   </template>
-                  <span>{{element.user.name}}</span>
+                  <span>{{ element.user.name }}</span>
                 </v-tooltip>
                 <v-hover v-slot="{ isHovering, props }">
                   <marquee-text :duration="10" v-bind="props" :paused="isHovering" :reverse="true"
@@ -35,22 +38,23 @@
                     <span class="song-name">{{ element.name }}</span>
                   </marquee-text>
                 </v-hover>
-                <div v-if="element.id !== NowPlaying">
+                <div v-if="element.status !== 1">
                   <v-card-actions class="action-buttons">
-                    <v-btn id="ban-btn" class="anger-buttons" variant="outlined"
+                    <v-btn id="delete-btn" class="anger-buttons" variant="outlined"
                            :loading="loading[1]"
-                           :disabled="loading[1]" @click="load(1)" icon elevation="0">
+                           :disabled="loading[1]" @click="clickTrashBin(element.queue_num)"
+                           icon elevation="0">
                       <font-awesome-icon size="xl" icon="fa-regular fa-trash-can"/>
                     </v-btn>
-                    <v-btn id="kick-btn" class="light-green-text" variant="outlined"
+                    <v-btn id="arrow-up" class="light-green-text" variant="outlined"
                            :loading="loading[2]"
-                           :disabled="loading[2]"
+                           :disabled="loading[2] || songs.indexOf(element) === 0"
                            @click="load(2)" icon elevation="0">
                       <font-awesome-icon size="xl" icon="fa-solid fa-arrow-up"/>
                     </v-btn>
-                    <v-btn id="kick-btn" class="light-green-text" variant="outlined"
+                    <v-btn id="arrow-down" class="light-green-text" variant="outlined"
                            :loading="loading[3]"
-                           :disabled="loading[3]"
+                           :disabled="loading[3] || songs.indexOf(element) === songs.length - 1"
                            @click="load(3)" icon elevation="0">
                       <font-awesome-icon size="xl" icon="fa-solid fa-arrow-down"/>
                     </v-btn>
@@ -70,6 +74,8 @@ import { defineComponent } from 'vue';
 import draggableComponent from 'vuedraggable';
 import MarqueeText from 'vue-marquee-text-component';
 import AvatarView from '@/components/avatar.vue';
+import ApiService from '@/api/api-service';
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 export default defineComponent({
   name: 'PlaylistView',
@@ -83,46 +89,7 @@ export default defineComponent({
     return {
       loading: [],
       enabled: true,
-      songs: [
-        {
-          id: 0,
-          link: 'string',
-          status: 0,
-          name: 'BTS: Dynamite 2022',
-          cover_image: 'https://img.youtube.com/vi/ATIFWDTjKM8/hqdefault.jpg',
-          user: {
-            id: 0,
-            avatar: 'https://img.youtube.com/vi/ATIFWDTjKM8/hqdefault.jpg',
-            name: 'string',
-            session_id: 'string',
-          },
-        },
-        {
-          id: 1,
-          link: 'string',
-          status: 0,
-          avatar: 'https://img.youtube.com/vi/ATIFWDTjKM8/hqdefault.jpg',
-          name: 'BTS: Dynamite 2020',
-          cover_image: 'https://img.youtube.com/vi/ATIFWDTjKM8/hqdefault.jpg',
-          user: {
-            id: 0,
-            name: 'string',
-            session_id: 'string',
-          },
-        },
-        {
-          id: 1,
-          link: 'string',
-          status: 0,
-          name: 'BTS: Dynamite 2020',
-          cover_image: 'https://img.youtube.com/vi/ATIFWDTjKM8/hqdefault.jpg',
-          user: {
-            id: 0,
-            name: 'string',
-            session_id: 'string',
-          },
-        },
-      ],
+      songs: [],
       dragging: false,
     };
   },
@@ -134,6 +101,9 @@ export default defineComponent({
     draggingInfo() {
       return this.dragging ? 'under drag' : '';
     },
+    songs_count() {
+      return this.songs.length;
+    },
   },
   methods: {
     checkMove(event) {
@@ -143,6 +113,31 @@ export default defineComponent({
       this.loading[i] = true;
       // eslint-disable-next-line no-return-assign
       setTimeout(() => (this.loading[i] = false), 3000);
+    },
+    getSongs() {
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this;
+      ApiService.getPlaylist()
+        .then((response) => {
+          self.songs = response.data.songs;
+          return self.songs;
+        });
+    },
+    clickTrashBin(queue_num) {
+      ApiService.deleteSong(queue_num);
+      this.loading[1] = true;
+    },
+  },
+  mounted() {
+    this.getSongs();
+    setInterval(() => (this.getSongs()), 10000);
+  },
+
+  watch: {
+    songs(newArr, oldArr) {
+      console.log(newArr.length);
+      console.log(oldArr.length);
+      if (oldArr.length > newArr.length) this.loading[1] = false;
     },
   },
 });

@@ -56,8 +56,9 @@ export default {
       bodyScroll.unfreeze();
     },
     async createNewRoom() {
-      await ApiService.createRoom(this.room_name, this.password)
+      await ApiService.createRoom(this.room_name, this.room_password)
         .then(async (result) => {
+          console.log(result);
           if (result.status === 409) {
             await ApiService.disconnect();
             await ApiService.whoami().then((res) => console.log(res));

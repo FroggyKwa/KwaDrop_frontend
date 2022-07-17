@@ -80,6 +80,7 @@ export default new class ApiService {
       .then((room) => {
         localStorage.room_id = room.data.id;
         localStorage.room_name = room.data.name;
+        localStorage.room_password = password;
         return room;
       })
       .catch((error) => {
@@ -96,9 +97,11 @@ export default new class ApiService {
         password,
       },
     })
-      .then((response) => {
+      .then((room) => {
         localStorage.room_id = room_id;
-        return response;
+        localStorage.room_name = room.data.name;
+        localStorage.room_password = password;
+        return room;
       })
       .catch((error) => {
         console.log(error.response.data.detail);
@@ -122,6 +125,26 @@ export default new class ApiService {
 
   async getRoommates() {
     const data = await this.axios.get('/get_roommates')
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+    return data;
+  }
+
+  async getPlaylist() {
+    const data = await this.axios.get('/get_playlist')
+      .then((response) => response)
+      .catch((error) => {
+        console.log(error);
+        return error.response;
+      });
+    return data;
+  }
+
+  async deleteSong(queue_num: number) {
+    const data = await this.axios.delete('/delete_song', { params: { queue_num } })
       .then((response) => response)
       .catch((error) => {
         console.log(error);

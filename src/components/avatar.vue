@@ -1,5 +1,5 @@
 <template>
-  <v-avatar id="avatar" :color="getRandomColor" size="90">
+  <v-avatar id="avatar" :color="getRandomColor" :size="size">
     <v-img
       :src="image"
       v-if="!image === false" alt=""></v-img>
@@ -15,6 +15,9 @@ export default defineComponent({
   props: {
     image: String,
     username: String,
+    size: {
+      default: '90',
+    },
   },
   computed: {
     getRandomColor() {

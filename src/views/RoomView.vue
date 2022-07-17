@@ -7,7 +7,7 @@
       </v-col>
     </template>
     <template #search-bar>
-      <div id="search-bar" class="d-flex flex-row justify-center">
+      <div id="search-bar" class="d-flex flex-row justify-between">
         <search-input
           placeholder="Click here to add music ..."
           type="search"
@@ -21,7 +21,27 @@
           :shortcut-listener-enabled="true"
         >
         </search-input>
-        <v-btn @click="queryInfo">
+        <Modal v-model="search_modal" title="Choose song:">
+          <div id="form-wrapper">
+            <perfect-scrollbar>
+              <div class="songs" :key="song.id" v-for="song in search_results">
+                <div class="song-item d-flex flex-row">
+                  <avatar-view :image="song.img"></avatar-view>
+                  <v-hover v-slot="{ isHovering, props }">
+                    <marquee-text :duration="5" v-bind="props" :paused="isHovering" :repeat="4">
+                      <span class="song-name">{{ song.title }}</span>
+                    </marquee-text>
+                  </v-hover>
+                  <v-btn class="button-primary ml-4 mr-4" type="button"
+                         @click="searchClick(song.link)">
+                    Choose
+                  </v-btn>
+                </div>
+              </div>
+            </perfect-scrollbar>
+          </div>
+        </Modal>
+        <v-btn @click="searchClick">
           <font-awesome-icon size="xl" icon="fa-solid fa-magnifying-glass"/>
         </v-btn>
       </div>
@@ -46,7 +66,7 @@
 </template>
 
 <script>
-import { defineComponent, ref } from 'vue';
+import { defineComponent } from 'vue';
 import AudioPlayer from 'vue3-audio-player';
 import HeaderView from '@/components/header.vue';
 import AvatarTooltipView from '@/components/AvatarTooltip.vue';
@@ -56,8 +76,9 @@ import SearchInput from '@/components/searchInput/SearchInput.vue';
 import RoomConfiguration from '@/components/RoomConfiguration.vue';
 import PlaylistView from '@/components/PlaylistView.vue';
 import ApiService from '@/api/api-service';
-
-const searchValue = ref('');
+import VueModal from '@kouts/vue-modal';
+import AvatarView from '@/components/avatar.vue';
+import MarqueeText from 'vue-marquee-text-component';
 
 export default defineComponent({
   name: 'RoomView',
@@ -70,9 +91,14 @@ export default defineComponent({
     HeaderView,
     AudioPlayer,
     SearchInput,
+    Modal: VueModal,
+    MarqueeText,
+    AvatarView,
   },
   data() {
     return {
+      search_results: [],
+      search_modal: false,
       current_song: {
         link: '',
         title: '',
@@ -80,7 +106,7 @@ export default defineComponent({
       },
       current_user: {},
       room_name: localStorage.room_name,
-      searchValue,
+      searchValue: '',
       users: [],
       songs: [],
       api: ApiService,
@@ -99,6 +125,25 @@ export default defineComponent({
   },
 
   methods: {
+    searchClick(url) {
+      if (url) {
+        ApiService.addSong(url).then((response) => console.log(response));
+        this.search_modal = false;
+      }
+      // eslint-disable-next-line @typescript-eslint/no-this-alias
+      const self = this;
+      try {
+        ApiService.addSong(this.searchValue)
+          .then((response) => {
+            if (response.response.status === 449) {
+              self.search_results = response.response.data;
+              this.search_modal = true;
+            }
+          });
+      } catch (e) {
+        // console.log(e);
+      }
+    },
     getImg(url) {
       return `http://localhost:7721/get_img?path=${url}`;
     },
@@ -112,7 +157,6 @@ export default defineComponent({
           this.current_user = value[i].user;
         }
       }
-      console.log(this.current_user);
       this.room_name = this.users[0].room.name;
     },
     getSongs(value) {
@@ -185,4 +229,27 @@ export default defineComponent({
 
 #search-bar
   width: 100%
+
+.ps
+  height: 30em
+  width: inherit
+
+.song-item
+  font-size: 1.3em
+  cursor: move
+  padding-bottom: 20px
+  margin:
+    top: 2em
+    left: 2em
+    right: 2em
+  border-bottom: 1px solid $white-accent
+  justify-content: space-between
+  align-items: center
+  gap: 30px
+  white-space: nowrap
+
+#playlist
+  min-height: 30em
+  min-width: 30em
+  margin: 4em
 </style>

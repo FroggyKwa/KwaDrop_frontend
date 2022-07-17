@@ -75,7 +75,6 @@ import draggableComponent from 'vuedraggable';
 import MarqueeText from 'vue-marquee-text-component';
 import AvatarView from '@/components/avatar.vue';
 import ApiService from '@/api/api-service';
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 export default defineComponent({
   name: 'PlaylistView',
@@ -140,8 +139,9 @@ export default defineComponent({
 
   watch: {
     songs(newArr, oldArr) {
-      if (oldArr.length > newArr.length) this.loading[1] = false;
-      else if (oldArr.length === newArr.length) {
+      if (oldArr.length > newArr.length) {
+        this.loading[1] = false;
+      } else if (oldArr.length === newArr.length) {
         this.loading[2] = false;
         this.loading[3] = false;
       }

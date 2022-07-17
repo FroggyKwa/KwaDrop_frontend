@@ -214,4 +214,11 @@ export default new class ApiService {
         return error;
       });
   }
+
+  async addSong(query: string) {
+    const data = await this.axios.post('/add_song', {}, { params: { link: query } })
+      .then((response) => response)
+      .catch((error) => error);
+    return data;
+  }
 }();

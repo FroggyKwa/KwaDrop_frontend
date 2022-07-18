@@ -145,7 +145,7 @@ export default defineComponent({
       }
     },
     getImg(url) {
-      return `http://localhost:7721/get_img?path=${url}`;
+      return `https://kwa-drop.online/get_img?path=${url}`;
     },
     onSongEnded() {
       this.loadSongsToPlayer();

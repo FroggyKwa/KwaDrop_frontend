@@ -12,7 +12,7 @@ export default new class ApiService {
   }
 
   async whoami() {
-    const session_data = await this.axios.get('http://localhost:7721/whoami', { withCredentials: true })
+    const session_data = await this.axios.get('/whoami', { withCredentials: true })
       .then((response) => {
         localStorage.session_id = response.data.session_id;
         localStorage.user_id = response.data.userid;
